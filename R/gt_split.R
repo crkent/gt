@@ -215,14 +215,18 @@ gt_split <- function(
 
       for (j in seq_along(col_range_list)) {
 
+        # Ensure the stub column is retained if it exists
+        stub_var <- dt_boxhead_get_var_stub(data = data)
+        columns_j <- c(visible_col_vars[col_range_list[[j]]], stub_var)
+
         gt_tbl_j <- gt_tbl_i
 
         gt_tbl_j[["_data"]] <-
-          gt_tbl_j[["_data"]][, visible_col_vars[col_range_list[[j]]]]
+          gt_tbl_j[["_data"]][, columns_j]
 
         gt_tbl_j[["_boxhead"]] <-
           gt_tbl_j[["_boxhead"]][
-            gt_tbl_j[["_boxhead"]]$var %in% visible_col_vars[col_range_list[[j]]],
+            gt_tbl_j[["_boxhead"]]$var %in% columns_j,
           ]
 
         gt_group <- grp_add(gt_group, gt_tbl_j)
